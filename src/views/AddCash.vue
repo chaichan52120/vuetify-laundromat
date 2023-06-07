@@ -18,13 +18,13 @@ v-container
             h1.text-h5 Payment Details
             v-row.mt-2
               v-col.py-0(cols="12")
-                v-text-field.mt-2(v-model="cardForm.fullName" :rules="defaultRules" label="Name on Card")
+                v-text-field.mt-2(v-model="cardForm.fullName" :rules="defaultRules(6)" label="Name on Card")
               v-col.py-0(cols="12")
-                v-text-field(v-model="cardForm.cardNumber" :rules="cardNumberRules" label="Card Number")
+                v-text-field(v-model="cardForm.cardNumber" :rules="paymentRules.cardNumber()" label="Card Number")
               v-col.py-0(cols="12" sm="6")
-                v-text-field(v-model="cardForm.validThrough" :rules="validThroughRules" label="Valid Through")
+                v-text-field(v-model="cardForm.validThrough" :rules="paymentRules.validThrough()" label="Valid Through")
               v-col.py-0(cols="12" sm="6")
-                v-text-field.text-left(v-model="cardForm.cvv" :rules="cvvRules" label="CVV")
+                v-text-field.text-left(v-model="cardForm.cvv" :rules="paymentRules.cvv()" label="CVV")
             v-btn.mt-5(v-show="!isChooseCard" type="submit" block color="primary") Add Card
             v-btn.mt-5(v-show="isChooseCard" block color="primary" @click="updateCard") Update Card
             v-btn.mt-5(v-show="isChooseCard" block color="red-darken-4" @click="deleteCard") Delete Card
@@ -35,71 +35,14 @@ import { useCreditCard } from '@/stores/creditCard'
 import CreditCard from '@/components/CreditCard.vue'
 import { computed, reactive, ref } from 'vue';
 import type { CreditCardType } from "@/interface/main";
+import { defaultRules, paymentRules } from "@/validate/main";
 
 const creditCardStore = useCreditCard()
 const myForm = ref<any>()
 const isChooseCard = ref<boolean>(false)
-const re_cardNumber = /^(?:\d{4})([ /.])\d{4}([ /.])\d{4}([ /.])\d{4}$/;
-const re_fullName = /^(?:\d{2})([//.])\d{2}$/;
-const re_cvv = /^(?:\d{3})$/;
 
 const cardStatus = computed(() => cardForm.id === creditCardStore.count ? 'active' : 'non-active')
 const formAlign = computed(() => creditCardStore.credit_data.length > 0 ? 'center' : 'start')
-
-const defaultRules = [(val: any[]) => {
-  if (val) {
-    if (val.length < 6) {
-      return 'This field must be at least 6 characters.'
-    }
-    return true;
-  } else {
-    return 'This field is requred.'
-  }
-}]
-
-const cardNumberRules = [(val: any[]) => {
-  const valLength = val.toString().length
-  if (valLength === 4 || valLength === 9 || valLength === 14) {
-    cardForm.cardNumber += ' '
-  }
-  if (val) {
-    if (re_cardNumber.exec(val.toString())) {
-      return true;
-    } else {
-      return 'The expected format is like #### #### #### ####'
-    }
-  } else {
-    return 'This field is requred.'
-  }
-}]
-
-const validThroughRules = [(val: any[]) => {
-  const valLength = val.toString().length
-  if (valLength === 2) {
-    cardForm.validThrough += '/'
-  }
-  if (val) {
-    if (re_fullName.exec(val.toString())) {
-      return true;
-    } else {
-      return 'The expected format is like ##/##'
-    }
-  } else {
-    return 'This field is requred.'
-  }
-}]
-
-const cvvRules = [(val: any[]) => {
-  if (val) {
-    if (re_cvv.exec(val.toString())) {
-      return true;
-    } else {
-      return 'The expected format is like ###'
-    }
-  } else {
-    return 'This field is requred.'
-  }
-}]
 
 const cardForm = reactive({
   id: 0,
