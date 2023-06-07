@@ -14,7 +14,7 @@ v-container
           credit-card(v-for="(item, index) in creditCardStore.credit_data" :data="item" :key="index" @submit="onChooseCard" :current-choose="cardForm.id")
         v-divider.d-sm-none
         v-col(cols="12" sm="6" :align-self="creditCardStore.credit_data.length > 0 ? 'center' : 'start'")
-          v-form(:submit="onSubmit")
+          v-form(ref="myForm" :submit="onSubmit")
             h1.text-h5 Payment Details
             v-row.mt-2
               v-col.py-0(cols="12")
@@ -37,24 +37,20 @@ import { reactive, ref } from 'vue';
 import type { CreditCardType } from "@/interface/main";
 
 const creditCardStore = useCreditCard()
-const isSubmit = ref<boolean>(true)
+const myForm = ref<any>()
 const isChooseCard = ref<boolean>(false)
 const re_cardNumber = /^(?:\d{4})([ /.])\d{4}([ /.])\d{4}([ /.])\d{4}$/;
 const re_fullName = /^(?:\d{2})([//.])\d{2}$/;
 const re_cvv = /^(?:\d{3})$/;
 
 const defaultRules = [(val: any[]) => {
-  if (isSubmit.value) {
-    if (val) {
-      if (val.length < 6) {
-        return 'This field must be at least 6 characters.'
-      }
-      return true;
-    } else {
-      return 'This field is requred.'
+  if (val) {
+    if (val.length < 6) {
+      return 'This field must be at least 6 characters.'
     }
-  } else {
     return true;
+  } else {
+    return 'This field is requred.'
   }
 }]
 
@@ -63,18 +59,14 @@ const cardNumberRules = [(val: any[]) => {
   if (valLength === 4 || valLength === 9 || valLength === 14) {
     cardForm.cardNumber += ' '
   }
-  if (isSubmit.value) {
-    if (val) {
-      if (re_cardNumber.exec(val.toString())) {
-        return true;
-      } else {
-        return 'The expected format is like #### #### #### ####'
-      }
+  if (val) {
+    if (re_cardNumber.exec(val.toString())) {
+      return true;
     } else {
-      return 'This field is requred.'
+      return 'The expected format is like #### #### #### ####'
     }
   } else {
-    return true;
+    return 'This field is requred.'
   }
 }]
 
@@ -83,34 +75,26 @@ const validThroughRules = [(val: any[]) => {
   if (valLength === 2) {
     cardForm.validThrough += '/'
   }
-  if (isSubmit.value) {
-    if (val) {
-      if (re_fullName.exec(val.toString())) {
-        return true;
-      } else {
-        return 'The expected format is like ##/##'
-      }
+  if (val) {
+    if (re_fullName.exec(val.toString())) {
+      return true;
     } else {
-      return 'This field is requred.'
+      return 'The expected format is like ##/##'
     }
   } else {
-    return true;
+    return 'This field is requred.'
   }
 }]
 
 const cvvRules = [(val: any[]) => {
-  if (isSubmit.value) {
-    if (val) {
-      if (re_cvv.exec(val.toString())) {
-        return true;
-      } else {
-        return 'The expected format is like ###'
-      }
+  if (val) {
+    if (re_cvv.exec(val.toString())) {
+      return true;
     } else {
-      return 'This field is requred.'
+      return 'The expected format is like ###'
     }
   } else {
-    return true;
+    return 'This field is requred.'
   }
 }]
 
@@ -123,7 +107,6 @@ const cardForm = reactive({
 })
 
 const onSubmit = () => {
-  isSubmit.value = true
   if (cardForm.cardNumber !== '' && cardForm.fullName !== '' && cardForm.validThrough !== '' && cardForm.cvv !== '') {
     creditCardStore.addCreditCard(cardForm)
     isChooseCard.value = true
@@ -131,8 +114,8 @@ const onSubmit = () => {
 };
 
 const onAddCard = () => {
+  myForm.value.reset()
   isChooseCard.value = false
-  isSubmit.value = false
   cardForm.id = creditCardStore.count
   cardForm.fullName = ''
   cardForm.cardNumber = ''
@@ -141,7 +124,6 @@ const onAddCard = () => {
 };
 
 const onChooseCard = (data: CreditCardType) => {
-  isSubmit.value = true
   isChooseCard.value = true
   cardForm.id = data.id
   cardForm.fullName = data.fullName
@@ -151,7 +133,6 @@ const onChooseCard = (data: CreditCardType) => {
 };
 
 const updateCard = () => {
-  isSubmit.value = true
   creditCardStore.updateCreditCard(cardForm)
 }
 
