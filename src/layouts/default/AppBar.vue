@@ -4,7 +4,7 @@ v-app-bar.pa-2(color="primary" density="compact")
     v-app-bar-nav-icon(@click="drawer = !drawer")
   v-app-bar-title Home
 
-v-navigation-drawer.pt-5(v-model="drawer" permanent)
+v-navigation-drawer.pt-5(v-model="drawer" temporary)
   v-list-item(prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg" :title="store.username")
   v-divider
 
@@ -24,5 +24,5 @@ import { useRoute } from "vue-router"
 
 const store = useStore()
 const route = useRoute()
-const drawer = ref<boolean>(true)
+const drawer = ref<boolean>(false)
 </script>
