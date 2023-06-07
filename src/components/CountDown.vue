@@ -1,5 +1,5 @@
-<template>
-  {{ hour() + ':' + min() + ':' + sec() }}
+<template lang="pug">
+span {{ hour() + ':' + min() + ':' + sec() }}
 </template>
 
 <script setup lang="ts">

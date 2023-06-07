@@ -1,11 +1,8 @@
-<template>
-  <v-container>
-    <v-row class="py-5 px-3" dense>
-      <v-col v-for="item in machineList" :key="item.id" sm="12" md="6">
-        <washing-card :data="item" color="grey-lighten-2" height="96"></washing-card>
-      </v-col>
-    </v-row>
-  </v-container>
+<template lang="pug">
+v-container
+  v-row.py-5.px-3(dense)
+    v-col(v-for="item in machineList" :key="item.id" sm="12" md="6")
+      washing-card(:data="item" color="grey-lighten-2" height="96")
 </template>
 
 <script lang="ts" setup>

@@ -1,28 +1,13 @@
-<template>
-  <v-card class="mt-2 elevation-5 rounded-lg" link @click="onClickCard"
-    :style="{ 'opacity': currentChoose === data.id ? '1' : '0.75' }">
-    <v-img class="text-white align-end" src="@/assets/credit-card.png" width="100%">
-      <div class="custom-space">
-        <v-card-text class="text-h4 pb-2">
-          {{ data.cardNumber }}
-        </v-card-text>
-
-        <v-row>
-          <v-col cols="8">
-            <v-card-text class="text-h5 pr-0">
-              {{ data.fullName }}
-            </v-card-text>
-          </v-col>
-
-          <v-col cols="4">
-            <v-card-text class="text-h5 pl-0">
-              {{ data.validThrough }}
-            </v-card-text>
-          </v-col>
-        </v-row>
-      </div>
-    </v-img>
-  </v-card>
+<template lang="pug">
+v-card.mt-2.elevation-5.rounded-lg(link @click="onClickCard" :style="{ 'opacity': currentChoose === data.id ? '1' : '0.75' }")
+  v-img.text-white.align-end(src="@/assets/credit-card.png" width="100%")
+    .custom-space
+      v-card-text.text-h4.pb-2 {{ data.cardNumber }}
+      v-row
+        v-col(cols="8")
+          v-card-text.text-h5.pr-0 {{ data.fullName }}
+        v-col(cols="4")
+          v-card-text.text-h5.pl-0 {{ data.validThrough }}
 </template>
 
 <script setup lang="ts">
