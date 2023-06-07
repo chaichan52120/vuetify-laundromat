@@ -2,12 +2,12 @@
 v-card.mt-2.elevation-5.rounded-lg(link @click="onClickCard" :style="{ 'opacity': currentChoose === data.id ? '1' : '0.75' }")
   v-img.text-white.align-end(src="@/assets/credit-card.png" width="100%")
     .custom-space
-      v-card-text.text-h4.pb-2 {{ data.cardNumber }}
+      v-card-text.text-card-lg.pb-2 {{ data.cardNumber }}
       v-row
         v-col(cols="8")
-          v-card-text.text-h5.pr-0 {{ data.fullName }}
+          v-card-text.text-card-md.pr-0 {{ data.fullName }}
         v-col(cols="4")
-          v-card-text.text-h5.pl-0 {{ data.validThrough }}
+          v-card-text.text-card-md.pl-0 {{ data.validThrough }}
 </template>
 
 <script setup lang="ts">
@@ -30,14 +30,14 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.text-h4 {
-  font-size: 6.5vw !important;
+.text-card-lg {
+  font-size: 6.5vw;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
   margin-bottom: 0px;
 }
 
-.text-h5 {
-  font-size: 4.5vw !important;
+.text-card-md {
+  font-size: 4.5vw;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 
 }
@@ -49,13 +49,13 @@ const props = defineProps({
 }
 
 @media screen and (min-width: 600px) {
-  .text-h4 {
-    font-size: 3.5vw !important;
+  .text-card-lg {
+    font-size: 3.5vw;
     margin-bottom: 15px;
   }
 
-  .text-h5 {
-    font-size: 2.5vw !important;
+  .text-card-md {
+    font-size: 2.5vw;
   }
 
   .custom-space {
@@ -64,13 +64,13 @@ const props = defineProps({
 }
 
 @media screen and (min-width: 1000px) {
-  .text-h4 {
-    font-size: 35px !important;
+  .text-card-lg {
+    font-size: 35px;
     margin-bottom: 20px;
   }
 
-  .text-h5 {
-    font-size: 25px !important;
+  .text-card-md {
+    font-size: 25px;
   }
 
   .custom-space {
