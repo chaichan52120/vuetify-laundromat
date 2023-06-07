@@ -4,11 +4,11 @@
       <v-form :submit="onSubmit">
         <v-img height="200" src="@/assets/logo.svg" />
 
-        <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
+        <div class="text-body-2 font-weight-light mb-n1 text-center">Welcome to</div>
 
         <h1 class="text-h3 font-weight-bold v-pa-5">Laundromat</h1>
 
-        <v-text-field v-model="username" label="Username" :rules="userRules" class="mt-5 text-left" variant="solo-filled">
+        <v-text-field v-model="username" label="Username" :rules="userRules" class="mt-5 text-left" variant="solo">
           <template #prepend-inner>
             <v-icon icon="mdi-account" color="primary" />
           </template>
