@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-responsive class="fill-height py-5 px-3">
-      <h1 class="text-h3 v-pa-5">Payment</h1>
+      <h1 class="text-h3">Payment</h1>
 
       <v-card class="mt-5 pa-2">
         <v-row>
