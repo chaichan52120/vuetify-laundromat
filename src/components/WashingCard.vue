@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  v-card(elevation="3" :class="isHaveHistory() ? 'text-purple-darken-3' : 'text-grey-darken-4'")
+  v-card(elevation="3" :class="cardColor")
     .d-flex.flex-no-wrap.justify-space-between
       .text-left
         v-card-title.text-h6 {{ data.name }}
@@ -23,18 +23,18 @@ div
                   v-card-actions
                     v-spacer
                     v-btn(color="grey" @click="dialogConfirm = false") Cancel
-                    v-btn(:color="creditCard !== undefined ? 'primary' : 'grey-lighten-1'" variant="text" @click="creditCard !== undefined ? (dialogConfirm = false, store.addHistory(data)) : null") Ok
+                    v-btn(:color="btnColor" variant="text" @click="creditCard !== undefined ? (dialogConfirm = false, store.addHistory(data)) : null") Ok
           .ml-2(v-show="isWashing() && store.history.filter((e) => e.id === data.id)[store.history.filter((e) => e.id === props.data.id).length - 1].timer > 0")
             count-down(:time_sec="isWashing() ? store.history.filter((e) => e.id === data.id)[store.history.filter((e) => e.id === props.data.id).length - 1].timer : 0")
       v-avatar.ma-2(size="100" rounded="0")
-        v-icon(icon="mdi-washing-machine" size="90" start :color="isHaveHistory() ? 'purple-darken-3' : 'grey-darken-3'")
+        v-icon(icon="mdi-washing-machine" size="90" start :color="iconColor")
 </template>
 
 <script setup lang="ts">
 import { useStore } from '@/stores/store'
 import { useCreditCard } from '@/stores/creditCard'
 import CountDown from "@/components/CountDown.vue"
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { onMounted } from 'vue';
 import type { machineType } from "@/interface/main";
 
@@ -42,6 +42,9 @@ const store = useStore()
 const creditCardStore = useCreditCard()
 const dialogConfirm = ref<boolean | undefined>()
 const creditCard = ref<number | null>()
+const cardColor = computed(() => isHaveHistory() ? 'text-purple-darken-3' : 'text-grey-darken-4')
+const btnColor = computed(() => creditCard.value !== undefined ? 'primary' : 'grey-lighten-1')
+const iconColor = computed(() => isHaveHistory() ? 'purple-darken-3' : 'grey-darken-3')
 
 onMounted(() => {
   creditCard.value = creditCardStore.selected

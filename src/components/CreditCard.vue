@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card.mt-2.elevation-5.rounded-lg(link @click="onClickCard" :style="{ 'opacity': currentChoose === data.id ? '1' : '0.75' }")
+v-card.mt-2.elevation-5.rounded-lg(link @click="onClickCard" :class="cardStatus")
   v-img.text-white.align-end(src="@/assets/credit-card.png" width="100%")
     .custom-space
       v-card-text.text-card-lg.pb-2 {{ data.cardNumber }}
@@ -11,8 +11,11 @@ v-card.mt-2.elevation-5.rounded-lg(link @click="onClickCard" :style="{ 'opacity'
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(['submit'])
+import { computed } from 'vue'
 
+const cardStatus = computed(() => props.currentChoose === props.data.id ? 'active' : 'non-active')
+
+const emit = defineEmits(['submit'])
 const onClickCard = () => {
   emit('submit', props.data)
 }
@@ -30,6 +33,14 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.active {
+  opacity: 1;
+}
+
+.non-active {
+  opacity: 0.75;
+}
+
 .text-card-lg {
   font-size: 6.5vw;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);

@@ -4,8 +4,8 @@ v-container
     h1.text-h3 Payment
     v-card.mt-5.pa-2
       v-row
-        v-col(cols="12" sm="6" align-self="center" style="height: calc(100vh - 200px)" class="overflow-auto")
-          v-card.elevation-5.rounded-lg(link @click="onAddCard" :style="{ 'opacity': cardForm.id === creditCardStore.count ? '1' : '0.75' }")
+        v-col.overflow-auto(cols="12" sm="6" align-self="center" style="height: calc(100vh - 200px)")
+          v-card.elevation-5.rounded-lg(link @click="onAddCard" :class="cardStatus")
             v-img.align-center.text-white(src="@/assets/credit-card-blank.png" cover)
               .text-center
                 v-chip(size="x-large" link)
@@ -13,7 +13,7 @@ v-container
                   span Add Card
           credit-card(v-for="(item, index) in creditCardStore.credit_data" :data="item" :key="index" @submit="onChooseCard" :current-choose="cardForm.id")
         v-divider.d-sm-none
-        v-col(cols="12" sm="6" :align-self="creditCardStore.credit_data.length > 0 ? 'center' : 'start'")
+        v-col(cols="12" sm="6" :align-self="formAlign")
           v-form(ref="myForm" :submit="onSubmit")
             h1.text-h5 Payment Details
             v-row.mt-2
@@ -24,7 +24,7 @@ v-container
               v-col.py-0(cols="12" sm="6")
                 v-text-field(v-model="cardForm.validThrough" :rules="validThroughRules" label="Valid Through")
               v-col.py-0(cols="12" sm="6")
-                v-text-field(v-model="cardForm.cvv" :rules="cvvRules" label="CVV" class="text-left")
+                v-text-field.text-left(v-model="cardForm.cvv" :rules="cvvRules" label="CVV")
             v-btn.mt-5(v-show="!isChooseCard" type="submit" block color="primary") Add Card
             v-btn.mt-5(v-show="isChooseCard" block color="primary" @click="updateCard") Update Card
             v-btn.mt-5(v-show="isChooseCard" block color="red-darken-4" @click="deleteCard") Delete Card
@@ -33,7 +33,7 @@ v-container
 <script lang="ts" setup>
 import { useCreditCard } from '@/stores/creditCard'
 import CreditCard from '@/components/CreditCard.vue'
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import type { CreditCardType } from "@/interface/main";
 
 const creditCardStore = useCreditCard()
@@ -42,6 +42,9 @@ const isChooseCard = ref<boolean>(false)
 const re_cardNumber = /^(?:\d{4})([ /.])\d{4}([ /.])\d{4}([ /.])\d{4}$/;
 const re_fullName = /^(?:\d{2})([//.])\d{2}$/;
 const re_cvv = /^(?:\d{3})$/;
+
+const cardStatus = computed(() => cardForm.id === creditCardStore.count ? 'active' : 'non-active')
+const formAlign = computed(() => creditCardStore.credit_data.length > 0 ? 'center' : 'start')
 
 const defaultRules = [(val: any[]) => {
   if (val) {
@@ -141,3 +144,13 @@ const deleteCard = () => {
   onAddCard()
 }
 </script>
+
+<style scoped>
+.active {
+  opacity: 1;
+}
+
+.non-active {
+  opacity: 0.75;
+}
+</style>
