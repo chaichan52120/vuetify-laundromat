@@ -25,7 +25,7 @@ export const useCreditCard = defineStore("credit", () => {
     count.value++;
   }
   function updateCreditCard(data: CreditCardType) {
-    const dataArr = credit_data.value.filter((x) => x.id != data.id);
+    const dataArr = credit_data.value.filter((x) => x.id !== data.id);
     credit_data.value = dataArr;
     credit_data.value.push({
       id: data.id,
